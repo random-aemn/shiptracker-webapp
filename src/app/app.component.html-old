@@ -1,0 +1,33 @@
+<div class="m-2.5">
+<!--  Start of Header   -->
+  <div class="grid grid-cols-2">
+    <div>
+      Rachel Boat Tracker
+    </div>
+    <div class="flex place-content-end">
+      Help
+    </div>
+  </div>
+
+<!--  Start of content    -->
+  <div>
+
+    <div>
+      placeholder for map/list of boats
+    </div>
+
+    <div >
+      <button class="btn btn-blue items-center">
+        Start
+      </button>
+      <button class="btn btn-blue items-center">
+        Stop
+      </button>
+    </div>
+
+  </div>
+
+
+
+
+</div>
