@@ -2,5 +2,11 @@ div {
   border: 1px dashed black;
 }
 
+table, th, td {
+  border: 1px solid black
+}
 
+td {
+  padding: 10px
+}
 

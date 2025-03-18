@@ -1,13 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {WebSocketService} from './services/WebSocketService';
 import {Observable, of, Subscription} from 'rxjs';
-import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {AsyncPipe, JsonPipe, KeyValuePipe, NgForOf} from '@angular/common';
+import { CommonModule } from '@angular/common'
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AsyncPipe, JsonPipe],
+  imports: [RouterOutlet, JsonPipe, NgForOf, KeyValuePipe],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
@@ -16,37 +17,30 @@ import {AsyncPipe, JsonPipe} from '@angular/common';
 
 export class AppComponent implements OnInit, OnDestroy {
 
-  // messages: any[] = [];
-  messages: Observable<any>[] = [];
-  // crap: Observable<string> | undefined;
-  // crap2: string = "";
-  private messageSubscription: Subscription = Subscription.EMPTY;
-  // private messageSubscription: Observable<any>;
+  public messageSubscription: Subscription = Subscription.EMPTY;
 
 
   title = 'RachelTracker';
+  payload: any = {};
+  payloadArray: any = [];
+
+  xyz: string = '{"MMSI":"367488370","BaseDateTime":"2023-01-01T01:33:29","LAT":"36.78231","LON":"-75.40529","Heading":"208.0","VesselName":"RACHEL"}'
 
   constructor(private webSocketService: WebSocketService) {
   }
 
 
   ngOnInit() {
-  //   Subscribe to messages from the Websocket
+
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
-        // this.crap2 = new Date().toString();
-        // this.crap = of(this.crap2);
-        // this.messages.push(new Date().toString());
-      this.messages.push(message);
+        console.log(message.MMSI);
+       this.payload = message;
+       this.payloadArray.push(message);
 
-        // console.log(message);
-        console.log(this.messages.length)
-        console.log(this.messages[this.messages.length -1])
-        // console.log("logging....")
       }
 
     );
-    // console.log("logging the first time ngOnInit does its thing")
 
   }
 
@@ -59,5 +53,5 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  protected readonly of = of;
+  // protected readonly of = of;
 }
