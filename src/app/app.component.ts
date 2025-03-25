@@ -4,11 +4,13 @@ import {WebSocketService} from './services/WebSocketService';
 import {Observable, of, Subscription} from 'rxjs';
 import {AsyncPipe, JsonPipe, KeyValuePipe, NgForOf} from '@angular/common';
 import { CommonModule } from '@angular/common'
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, NgForOf, KeyValuePipe],
+  imports: [RouterOutlet, JsonPipe, NgForOf, KeyValuePipe, MatLabel, MatLabel, MatInput, MatLabel, MatFormField],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
