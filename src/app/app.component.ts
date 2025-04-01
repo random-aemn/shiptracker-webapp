@@ -6,13 +6,22 @@ import {AsyncPipe, JsonPipe, KeyValuePipe, NgForOf} from '@angular/common';
 import { CommonModule } from '@angular/common'
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatButton} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button';
+
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, NgForOf, KeyValuePipe, MatLabel, MatLabel, MatInput, MatLabel, MatFormField],
   templateUrl: './app.component.html',
   standalone: true,
+  imports: [
+    MatLabel,
+    MatButtonModule,
+    MatInput,
+    MatFormField,
+    NgForOf
+  ],
   styleUrl: './app.component.css'
 })
 
@@ -34,11 +43,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+
+  }
+
+
+
+  ngOnDestroy() {
+
+  }
+
+  stopWebsocket() {
+    // Unsubscribe from WebSocket messages and close the connection
+    this.messageSubscription.unsubscribe();
+    this.webSocketService.closeConnection();
+  }
+
+
+  subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
         console.log(message.MMSI);
-       this.payload = message;
-       this.payloadArray.push(message);
+        this.payload = message;
+        this.payloadArray.push(message);
 
       }
 
@@ -46,14 +72,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-
-
-  ngOnDestroy() {
-    // Unsubscribe from WebSocket messages and close the connection
-    this.messageSubscription.unsubscribe();
-    this.webSocketService.closeConnection();
+  clearData() {
+    // this.stopWebsocket();
+    this.payloadArray = [];
   }
-
-
-  // protected readonly of = of;
 }

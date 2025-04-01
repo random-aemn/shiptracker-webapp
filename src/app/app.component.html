@@ -15,22 +15,33 @@
 <!--        <span>Enter the URL</span>-->
 <!--      </div>-->
       <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-full">
-        <mat-label>Enter the URL</mat-label>
+        <mat-label>Enter the Websocket URL: </mat-label>
         <input matInput placeholder="wss.urlgoeshere" value="ws://localhost:5678">
       </mat-form-field>
     </div>
 
     <div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+<!--      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="subscribeToWebSocket()">-->
+      <button mat-stroked-button (click)="subscribeToWebSocket()">
         Start
       </button>
     </div>
     <div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <button mat-stroked-button (click)="stopWebsocket()">
         Stop
       </button>
     </div>
+    <div>
+      <button mat-stroked-button (click)="clearData()">
+        Clear
+      </button>
+    </div>
+
   </div>
+
+<!--  <button mat-raised-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
+<!--    HELP-->
+<!--  </button>-->
 
 <!--  Main content of page-->
   <div class="flex flex-row mt-5 h-[500px]">
@@ -41,14 +52,14 @@
         Ship Table Data
       </div>
 <!--      Ship Table Data-->
-      <table>
+      <table class="table-auto w-full">
         <tr>
           <th>MMSI</th>
           <th>Time</th>
-          <th>Lat</th>
-          <th>Long</th>
-          <th>Heading</th>
-          <th>Ship Name</th>
+          <th >Lat</th>
+          <th >Long</th>
+          <th >Heading</th>
+          <th >Ship Name</th>
         </tr>
         <tr *ngFor="let positionReport of payloadArray.reverse()">
           <td>{{ positionReport.MMSI }}</td>
