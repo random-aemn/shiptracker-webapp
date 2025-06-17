@@ -8,6 +8,7 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
+import {mmsiToColor} from '../assets/js/mmsiColorId';
 
 
 
@@ -63,14 +64,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
         console.log(message.MMSI);
+        console.log("the color is: " + mmsiToColor(message.MMSI));
         console.log("hopefully the data follows...")
         // If the data is an array of objects, console.table will display it in a formatted table
         // console.table(message);
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
-        console.dir(message);
+        message.plotColor = mmsiToColor(message.MMSI);
 
-        this.payload = message;
+        console.dir(message);
+        // this.payload = message;
         this.payloadArray.push(message);
 
       }
@@ -88,4 +91,27 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.stopWebsocket();
     this.payloadArray = [];
   }
+
+scaleNumberToHex(input: number) {
+    let sourceMin = 0;
+    let sourceMax = 99;
+    let targetMin = 0;
+    let targetMax = 255
+    let scaledIntResult = Math.floor((input - sourceMin) * (targetMax - targetMin) / (sourceMax - sourceMin) + targetMin);
+    let hexValue = scaledIntResult.toString(16);
+    return hexValue.length === 1 ? "0" + hexValue : hexValue;
+  }
+
+mmsiToColor(mmsi: string) {
+    let hexColor = "";
+    let startIdx = 3;
+    for (let i = 0; i < 4; i++) {
+      let colorBasis = mmsi.toString().substring(startIdx, startIdx + 2);
+      hexColor += this.scaleNumberToHex(Number(colorBasis));
+      startIdx += 2;
+    }
+
+    return `#${hexColor}`;
+  }
+
 }

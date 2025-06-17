@@ -1,4 +1,4 @@
-function scaleNumberToHex(input) {
+export function scaleNumberToHex(input) {
   let sourceMin = 0;
   let sourceMax = 99;
   let targetMin = 0;
@@ -8,7 +8,7 @@ function scaleNumberToHex(input) {
   return hexValue.length === 1 ? "0" + hexValue : hexValue;
 }
 
-function mmsiToColor(mmsi) {
+export function mmsiToColor(mmsi) {
   let hexColor = "";
   let startIdx = 3;
   for (let i = 0; i < 4; i++) {
