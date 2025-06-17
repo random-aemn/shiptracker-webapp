@@ -63,6 +63,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
         console.log(message.MMSI);
+        console.log("hopefully the data follows...")
+        // If the data is an array of objects, console.table will display it in a formatted table
+        // console.table(message);
+
+        // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
+        console.dir(message);
+
         this.payload = message;
         this.payloadArray.push(message);
 
@@ -71,6 +78,11 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
   }
+
+
+
+
+
 
   clearData() {
     // this.stopWebsocket();
