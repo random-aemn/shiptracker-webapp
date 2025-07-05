@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
+import { Map } from "./map/map";
 
 
 
@@ -21,8 +22,9 @@ import {mmsiToColor} from '../assets/js/mmsiColorId';
     MatButtonModule,
     MatInput,
     MatFormField,
-    NgForOf
-  ],
+    NgForOf,
+    Map
+],
   styleUrl: './app.component.css'
 })
 
