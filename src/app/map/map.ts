@@ -1,5 +1,9 @@
 import { AfterViewInit, Component } from '@angular/core';
 import * as L from 'leaflet';
+import { json_cboutline } from '../../assets/cboutline';
+
+//declare var cboutline: string;
+
 
 @Component({
   selector: 'app-map',
@@ -11,9 +15,13 @@ import * as L from 'leaflet';
 export class Map  implements AfterViewInit{
 
 
+
   private map: L.Map | undefined;
 
-  constructor() { }
+  constructor() {
+        console.log("Here's Johnny on the spot!");
+    console.log(json_cboutline);
+   }
 
 
   private initMap(): void {
@@ -45,6 +53,10 @@ const latLngs = cbBox.map(coords => L.latLng(coords[0], coords[1]));
     tiles.addTo(this.map);
     let cbAntBox = new L.Polyline(latLngs, {color: 'blue', weight: 2}).addTo(this.map); 
 
+
+    console.log("Here's Johnny on the spot!");
+    // console.log(json_cboutline);
+
 //     L.geoJSON(json_cboutline, {
 //     style: function (feature) {
 //         return {color: 'red', weight: 1,
@@ -64,9 +76,9 @@ const latLngs = cbBox.map(coords => L.latLng(coords[0], coords[1]));
 
     ngAfterViewInit(): void {
 
-          this.initMap();
-          console.log(json_cboutline)
-          console.log("hi")
+    //       this.initMap();
+    //       console.log(json_cboutline)
+ 
 
      }
 
