@@ -69,4 +69,9 @@ npm install leaflet
 npm install @types/leaflet
 ```
 
+import { json_cboutline } from '../../assets/cboutline';
+
+ 
+    
+
 
