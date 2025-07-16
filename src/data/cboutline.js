@@ -1,1 +1,0 @@
-var json_cboutline = {"type":"FeatureCollection","name":"cboutline_1","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[-75.3777,36.6708],[-75.3777,39.6876],[-77.4172,39.6876],[-77.4172,36.6708],[-75.3777,36.6708]]]}}]}
