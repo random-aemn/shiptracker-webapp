@@ -69,8 +69,23 @@ npm install leaflet
 npm install @types/leaflet
 ```
 
-import { json_cboutline } from '../../assets/cboutline';
 
+## Using Data/Methods Stored in External File
+
+In order to reference variables/methods defined in external file, three (3) elements are required:
+- Declare the variable in the external file containing TS/JS with
+
+     ```
+    export var variableName = 
+     ```
+- In the component file
+     ```
+    import { json_cboutline } from '../../assets/cboutline';
+    ```
+- Add relative file location to the scripts array  in the projects body within the angular.json file
+    ```
+    scripts": ["src/assets/cboutline.js"]
+    ```
  
     
 
