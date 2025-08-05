@@ -10,6 +10,7 @@ import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { Map } from "./map/map";
+import { HttpClient } from '@angular/common/http';
 
 
 
