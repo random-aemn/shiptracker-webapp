@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
   selector: 'app-map',
   imports: [],
   templateUrl: './map.html',
-  styleUrl: './map.css',
-  providers: [MapServiceService]
+  styleUrl: './map.css'
 })
 
 export class Map  implements AfterViewInit{

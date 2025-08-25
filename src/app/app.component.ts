@@ -10,8 +10,7 @@ import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { Map } from "./map/map";
-import { HttpClient } from '@angular/common/http';
-
+import { JsonReaderService } from './services/json-reader.service';
 
 
 @Component({
@@ -41,12 +40,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   xyz: string = '{"MMSI":"367488370","BaseDateTime":"2023-01-01T01:33:29","LAT":"36.78231","LON":"-75.40529","Heading":"208.0","VesselName":"RACHEL"}'
 
-  constructor(private webSocketService: WebSocketService) {
-  }
+  constructor(private webSocketService: WebSocketService,
+              private jsonReader: JsonReaderService) {}
 
 
   ngOnInit() {
-
+    this.jsonReader.getChesapeakeBayOutline();
 
   }
 
