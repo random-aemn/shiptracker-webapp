@@ -1,7 +1,9 @@
 
 In order to reference variables/methods defined in external file, three (3) elements are required:
 
-1. Place the file in the `public` folder (at the same level as `src`) For Angular 18 & up,
+1. Place the resource file in the `public` folder (at the same level as `src`) For Angular 18 & up.
+   * This example uses a GEOJSON file to describe a bounding box on a map
+   * The GEOJSON file is saved in the `public` folder
 
 1. Create an Angular Service class
    1. 
