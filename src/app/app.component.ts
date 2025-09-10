@@ -46,7 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.jsonReader.getChesapeakeBayOutline();
-
   }
 
 
