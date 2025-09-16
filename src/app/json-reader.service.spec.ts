@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { JsonReaderService } from './json-reader.service';
+import { JsonReaderService } from './services/json-reader.service';
 
 describe('JsonReaderService', () => {
   let service: JsonReaderService;
