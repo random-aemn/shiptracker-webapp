@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class JsonReaderService {
+
 
   
 constructor (private http: HttpClient) {};
@@ -20,27 +21,35 @@ points to the project's public directory
 Reference: angular.dev/reference/configs/workspace-config
 */
 
-public getChesapeakeBayOutline() {
-  return this.http.get('./cboutline.json').subscribe(data => {
+// public getChesapeakeBayOutline() {
+//   return this.http.get('./cboutline.json').subscribe(data => {
 
+//     this.boundingbox = data;
+//     console.log("this should have json data");
+
+//     //console.info will output multiple objects
+//     console.info(data);
+
+
+//     console.log("Here is the data we want:");
     
-    console.log("this should have json data");
+//     // console.log(data.features[0].geometry.coordinates[0]);
 
-    //console.info will output multiple objects
-    console.info(data);
-
-   let crap = JSON.stringify(data);
-   console.log("The string representation of crap" );
-   console.log(crap);
+//    let crap = JSON.stringify(data);
+//    console.log("The string representation of crap" );
+//    console.log(crap);
     
-  })
-}
+//   })
+// }
 
 
 
 public getFred(): Observable<any> {
+
     return this.http.get('./cboutline.json');
 
   }
 
+
+  
 }

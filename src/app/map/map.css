@@ -9,11 +9,11 @@
   }
   
   .map-frame {
-    border: 2px solid black;
+    border: 2px solid rgb(230, 28, 28);
     height: 100%;
   } 
 
 
-  #map {
+  #cbMap {
     height: 100%;
   }
