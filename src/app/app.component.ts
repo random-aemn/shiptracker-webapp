@@ -38,14 +38,12 @@ export class AppComponent implements OnInit, OnDestroy {
   payload: any = {};
   payloadArray: any = [];
 
-  // xyz: string = '{"MMSI":"367488370","BaseDateTime":"2023-01-01T01:33:29","LAT":"36.78231","LON":"-75.40529","Heading":"208.0","VesselName":"RACHEL"}'
 
   constructor(private webSocketService: WebSocketService,
               private jsonReader: JsonReaderService) {}
 
 
   ngOnInit() {
-    // this.jsonReader.getChesapeakeBayOutline();
   }
 
 
@@ -63,29 +61,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
-      (message) => {
-        // console.log(message.MMSI);
-        // console.log("the color is: " + mmsiToColor(message.MMSI));
-        // console.log("hopefully the data follows...")
-        // If the data is an array of objects, console.table will display it in a formatted table
-        // console.table(message);
-
+      (messageList) => {
+   
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
-        message.plotColor = mmsiToColor(message.MMSI);
+        // message.plotColor = mmsiToColor(message.MMSI);
 
-        // console.dir(message);
-        // this.payload = message;
-        this.payloadArray.push(message);
+        for (let message of messageList){
+          this.payloadArray.push(message)
+        }
+        // this.payloadArray.push(message);
 
       }
 
     );
 
   }
-
-
-
-
 
 
   clearData() {
