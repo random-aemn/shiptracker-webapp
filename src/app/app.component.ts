@@ -9,8 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
-import { Map } from "./map/map";
 import { JsonReaderService } from './services/json-reader.service';
+import { PositionReport } from './position-report';
+import { Map as GeographicMap} from './map/map';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { JsonReaderService } from './services/json-reader.service';
     MatInput,
     MatFormField,
     NgForOf,
-    Map
+    GeographicMap
 ],
   styleUrl: './app.component.css'
 })
@@ -37,13 +38,19 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'RachelTracker';
   payload: any = {};
   payloadArray: any = [];
+  
+  map = new Map<number, PositionReport[]>();
 
 
   constructor(private webSocketService: WebSocketService,
               private jsonReader: JsonReaderService) {}
 
 
+
+            
+
   ngOnInit() {
+    
   }
 
 
@@ -66,10 +73,12 @@ export class AppComponent implements OnInit, OnDestroy {
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
 
+
         for (let message of messageList){
           this.payloadArray.push(message)
+
+
         }
-        // this.payloadArray.push(message);
 
       }
 
