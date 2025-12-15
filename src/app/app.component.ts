@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {WebSocketService} from './services/WebSocketService';
-import {Observable, of, Subscription} from 'rxjs';
+import {filter, Observable, of, Subscription} from 'rxjs';
 import {AsyncPipe, JsonPipe, KeyValuePipe, NgForOf} from '@angular/common';
 import { CommonModule } from '@angular/common'
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
@@ -12,6 +12,9 @@ import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { JsonReaderService } from './services/json-reader.service';
 import { PositionReport } from './position-report';
 import { Map as GeographicMap} from './map/map';
+import { MyFakeDataService } from './my-fake-data.service';
+import { PositionReport1 } from './position-report-1';
+import { PositionReport2 } from './position-report-2';
 
 
 @Component({
@@ -35,22 +38,39 @@ export class AppComponent implements OnInit, OnDestroy {
   public messageSubscription: Subscription = Subscription.EMPTY;
 
 
+
   title = 'RachelTracker';
   payload: any = {};
   payloadArray: any = [];
+  shipList = Map<number, PositionReport[]>
+
+  MAX_NUM_POSITION_REPORTS = 10;
   
+
   map = new Map<number, PositionReport[]>();
 
 
   constructor(private webSocketService: WebSocketService,
-              private jsonReader: JsonReaderService) {}
+              private jsonReader: JsonReaderService,
+              private myFakeDataService: MyFakeDataService) {}
 
 
 
             
 
   ngOnInit() {
-    
+    console.log("here I am, in Init");
+
+    this.myFakeDataService.getData().subscribe(
+      (data: PositionReport1[]) => {
+
+        data.forEach(this.filterPositionReportByDate, "2023-01-01T00:05:17");
+
+        console.log(data)
+      }
+    );
+
+    console.log("I ought to be leaving Init");
   }
 
 
@@ -68,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
-      (messageList) => {
+      (messageList: PositionReport[]) => {
    
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
@@ -76,6 +96,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         for (let message of messageList){
           this.payloadArray.push(message)
+          console.log(message);
+        
 
 
         }
@@ -91,6 +113,18 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.stopWebsocket();
     this.payloadArray = [];
   }
+
+
+  // Convert the string representation of  date to Unix representation in seconds -> then filter the array
+  // thisArg is the cutoff date, represented in seconds
+
+filterPositionReportByDate(value: PositionReport1[], key: number , map: Map<number, PositionReport1[]>, thisArg: string) {
+
+  map.set(key, map.get(key).filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(thisArg)));
+
+};
+
+
 
 scaleNumberToHex(input: number) {
     let sourceMin = 0;

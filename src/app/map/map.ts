@@ -80,12 +80,7 @@ export class Map  implements AfterViewInit, OnInit  {
     (rawData: FeatureCollection) => {
 
 
-      console.log("accessing rawData....: ");
-      console.info(rawData.features[0].geometry);
-
           this.geoJsonData = rawData;
-          console.log("this is geoJsonData from the subscription/observable");
-          console.info(this.geoJsonData);
           L.geoJSON(this.geoJsonData).addTo(this.map);
 
 
@@ -98,8 +93,6 @@ export class Map  implements AfterViewInit, OnInit  {
 
 // Called once all the components and child components have been initialized
     ngAfterViewInit(): void {
-
-      console.log("I'm in the ngAfterViewInit method calling the this.initMap function");
       this.initMap();
 
      }

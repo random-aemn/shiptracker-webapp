@@ -10,7 +10,6 @@ export class MapServiceService {
 
   getChesapeakeBayOutline() {
     return this.http.get('./cboutline.json');
-    // return this.http.get('C:\Users\chris\git\shiptracker-webapp\src\assets\cboutline.json');
 
   }
 }
