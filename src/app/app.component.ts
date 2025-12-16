@@ -14,7 +14,6 @@ import { PositionReport } from './position-report';
 import { Map as GeographicMap} from './map/map';
 import { MyFakeDataService } from './my-fake-data.service';
 import { PositionReport1 } from './position-report-1';
-import { PositionReport2 } from './position-report-2';
 
 
 @Component({
@@ -45,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   shipList = Map<number, PositionReport[]>
 
   MAX_NUM_POSITION_REPORTS = 10;
-  
+
 
   map = new Map<number, PositionReport[]>();
 
@@ -56,19 +55,31 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-            
+
 
   ngOnInit() {
     console.log("here I am, in Init");
 
-    this.myFakeDataService.getData().subscribe(
-      (data: PositionReport1[]) => {
+    this.myFakeDataService.getDataArray();
+    let testMap = this.myFakeDataService.convertArrayToMap(this.myFakeDataService.getDataArray());
 
-        data.forEach(this.filterPositionReportByDate, "2023-01-01T00:05:17");
+    console.log(testMap);
 
-        console.log(data)
-      }
-    );
+    // this.myFakeDataService.getDataArray().subscribe(
+    //   (data: PositionReport1[]) => {
+    //
+    //     let reportMap = new Map<number, PositionReport1[]>;
+    //
+    //     for(let i: number = 0; i < 2; i++){
+    //       reportMap.set(i, data)
+    //     }
+    //
+    //
+    //     data.forEach(this.filterPositionReportByDate, "2023-01-01T00:05:17");
+    //
+    //     console.log(data)
+    //   }
+    // );
 
     console.log("I ought to be leaving Init");
   }
@@ -89,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
   subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (messageList: PositionReport[]) => {
-   
+
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
 
@@ -97,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
         for (let message of messageList){
           this.payloadArray.push(message)
           console.log(message);
-        
+
 
 
         }
