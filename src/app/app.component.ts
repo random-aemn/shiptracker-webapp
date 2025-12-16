@@ -131,7 +131,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
 filterPositionReportByDate(value: PositionReport1[], key: number , map: Map<number, PositionReport1[]>, thisArg: string) {
 
-  map.set(key, map.get(key).filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(thisArg)));
+  //   "!" is a non-null assertion that tells the compiler the value will NOT be null or undefined
+  map.set(key, map.get(key)!.filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(thisArg)));
 
 };
 
