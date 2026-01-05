@@ -61,9 +61,19 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log("here I am, in Init");
 
     this.myFakeDataService.getDataArray();
-    let testMap = this.myFakeDataService.convertArrayToMap(this.myFakeDataService.getDataArray());
+    let positionReportResponse = this.myFakeDataService.getDataArray() as PositionReport1[];
 
-    console.log(testMap);
+    console.log(positionReportResponse);
+
+    console.log("This should hold the map representation of the PositionReport1 data");
+    let positionReportMap=  this.myFakeDataService.convertArrayToMap(positionReportResponse);
+
+     console.log(positionReportMap);
+
+
+    // let testMap = this.myFakeDataService.convertArrayToMap(this.myFakeDataService.getDataArray());
+
+    console.log();
 
     // this.myFakeDataService.getDataArray().subscribe(
     //   (data: PositionReport1[]) => {
