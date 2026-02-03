@@ -10,20 +10,20 @@ import pointer = Browser.pointer;
 })
 export class MyFakeDataService {
 
-// msgs=[{"mmsi": 367488370, "BaseDateTime": "2023-01-01T00:05:17", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}];
+msgs=[{"mmsi": 367488370, "BaseDateTime": "2023-01-01T00:05:15", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}];
 
 //   Test that given a set of these position reports, set the horizon date to: something that precedes the timestamps, something that is after all the timestamps, and
 //   a timestamp value that cuts a section of the data set
 dataArray: PositionReport1[] = [
-  {"mmsi": 1, "BaseDateTime": "2023-01-01T00:05:17", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 1, "BaseDateTime": "2023-01-02T00:05:18", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 1, "BaseDateTime": "2023-01-03T00:05:19", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 1, "BaseDateTime": "2023-01-04T00:05:20", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 1, "BaseDateTime": "2023-01-01T00:05:17Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 1, "BaseDateTime": "2023-01-02T00:05:18Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 1, "BaseDateTime": "2023-01-03T00:05:19Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 1, "BaseDateTime": "2023-01-04T00:05:20Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
 
-  {"mmsi": 2, "BaseDateTime": "2023-01-01T00:05:17", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 2, "BaseDateTime": "2023-01-02T00:05:18", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 2, "BaseDateTime": "2023-01-03T00:05:19", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-  {"mmsi": 2, "BaseDateTime": "2023-01-04T00:05:20", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}
+  {"mmsi": 2, "BaseDateTime": "2023-01-01T00:05:17Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 2, "BaseDateTime": "2023-01-02T00:05:18Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 2, "BaseDateTime": "2023-01-03T00:05:19Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
+  {"mmsi": 2, "BaseDateTime": "2023-01-04T00:05:20Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}
 ]
 
 
@@ -38,40 +38,63 @@ dataArray: PositionReport1[] = [
   //     ]);
   // };
 
-  // oldConvertArrayToMap(msgs: PositionReport1[]): Map<number, PositionReport1[]>{
-  //
-  //   let map = new Map<number, PositionReport1[]>;
-  //
-  //   for (let i = 0; i < msgs.length; i++) {
-  //     let mappedMMSI = map.get(msgs[i].mmsi) as unknown;
-  //     if (mappedMMSI === undefined) {
-  //       // The MMSI found in the most recently received position report is not found in the map
-  //       //  Set the key and value in the map
-  //       let positionReport = msgs[i] as PositionReport1
-  //       let positionReportArray: PositionReport1[] = [];
-  //       positionReportArray.push(positionReport);
-  //       map.set(msgs[i].mmsi, positionReportArray);
-  //     }
-  //     else {
-  //       // The MMSI found in the most recently received position report is in the map
-  //       //  Add the position report to the map
-  //
-  //       let fred: PositionReport1[] = map.get(mappedMMSI as number) as PositionReport1[];
-  //       let pr: PositionReport1 = msgs[i] as PositionReport1
-  //       if(fred != undefined) {
-  //         fred.push(pr);
-  //       }
-  //       map.set(mappedMMSI as number, fred);
-  //
-  //     }
-  //   }
-  //   return map;
-  // }
+  oldConvertArrayToMap(msgs: PositionReport1[]): Map<number, PositionReport1[]>{
 
-  convertArrayToMap(msgs: PositionReport1[]) : Map<number, PositionReport1[]> {
+    let map = new Map<number, PositionReport1[]>;
 
-  let prMap = new Map<number, PositionReport1[]>;
-  let horizonDate = new Date();
+    for (let i = 0; i < msgs.length; i++) {
+      let mappedMMSI = map.get(msgs[i].mmsi) as unknown;
+      if (mappedMMSI === undefined) {
+        // The MMSI found in the most recently received position report is not found in the map
+        //  Set the key and value in the map
+        let positionReport = msgs[i] as PositionReport1
+        let positionReportArray: PositionReport1[] = [];
+        positionReportArray.push(positionReport);
+        map.set(msgs[i].mmsi, positionReportArray);
+      }
+      else {
+        // The MMSI found in the most recently received position report is in the map
+        //  Add the position report to the map
+
+        let fred: PositionReport1[] = map.get(mappedMMSI as number) as PositionReport1[];
+        let pr: PositionReport1 = msgs[i] as PositionReport1
+        if(fred != undefined) {
+          fred.push(pr);
+        }
+        map.set(mappedMMSI as number, fred);
+
+      }
+    }
+    return map;
+  }
+
+
+   // TODO TEST THE CONVERSION OF THE ARRAY TO THE MAP STRUCTURE
+  convertArrayToMap(prArr: PositionReport1[]): Map<number, PositionReport1[]>{
+
+  let prMap = new Map<number, PositionReport1[]>();
+
+    // Now, load the array of position reports into the data map
+    for (let i = 0; i < prArr.length; i++) {
+      const existingArray = prMap.get(prArr[i].mmsi) ?? [];
+      // 2. Add the new element to the array
+      existingArray.push(prArr[i]);
+
+      // 3. Update the map with the modified array (even if the key was new)
+      prMap.set(prArr[i].mmsi, existingArray);
+    }
+
+    return prMap;
+
+  }
+
+  // THEN TEST THE FILTER FUNCTION
+  filterMapByDate(prMap: Map<number, PositionReport1[]>) : Map<number, PositionReport1[]> {
+
+  // Need to convert the test array to a map structure
+
+  // Records with a BaseDateTime equal to or before to horizonDate will be deleted
+  let horizonDate = new Date("2023-01-01T00:05:18Z");
 
     prMap.forEach((prArrayData, key) => {
       // console.log(`Key: ${key}, Value: ${value}`);

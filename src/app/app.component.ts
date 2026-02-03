@@ -78,12 +78,17 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log(positionReportResponse);
 
     console.log("This should hold the map representation of the PositionReport1 data");
-    let positionReportMap=  this.myFakeDataService.convertArrayToMap(positionReportResponse);
+    let positionsReportMap = this.myFakeDataService.convertArrayToMap(positionReportResponse);
+    console.log("XXXXXXXXXXXXXXX");
+    console.log("ZZZZZZZZZZZZ");
+    console.log(positionsReportMap);
 
-     console.log("XXXXXXXX");
-     console.log("XXXXXXXX");
+    let positionReportMap=  this.myFakeDataService.filterMapByDate(positionsReportMap);
+
+     console.log("YYYYYYYYYYY");
+     console.log("PPPPPPPPPPPPP");
      console.log(positionReportMap);
-    console.log("XXXXXXXX");
+    console.log("I WORKED????????");
 
 
     console.log();
@@ -92,9 +97,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const dateStringThisArg: string = dateObject.toISOString();
 
 
-    positionReportMap.forEach(this.filterPositionReportByDate);
-
-        console.log(positionReportMap)
+    // positionReportMap.forEach(this.filterPositionReportByDate);
+    //
+    //     console.log(positionReportMap)
 
 
   }
