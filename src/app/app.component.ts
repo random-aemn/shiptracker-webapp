@@ -56,6 +56,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
+  // Convert the string representation of  date to Unix representation in seconds -> then filter the array
+  // thisArg is the cutoff date, represented in seconds
+
+  filterPositionReportByDate(value: PositionReport1[], key: number , map: Map<number, PositionReport1[]>) {
+
+    //   "!" is a non-null assertion that tells the compiler the value will NOT be null or undefined
+    // map.set(key, map.get(key)!.filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(fred)));
+    console.log("hey, inside the filter position method - 'this' is: " + this)
+    console.info("the key is: " + key);
+    // console.log("the value is: " + value);
+
+  };
 
   ngOnInit() {
     console.log("here I am, in Init");
@@ -68,44 +80,34 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log("This should hold the map representation of the PositionReport1 data");
     let positionReportMap=  this.myFakeDataService.convertArrayToMap(positionReportResponse);
 
+     console.log("XXXXXXXX");
+     console.log("XXXXXXXX");
      console.log(positionReportMap);
+    console.log("XXXXXXXX");
 
-
-    // let testMap = this.myFakeDataService.convertArrayToMap(this.myFakeDataService.getDataArray());
 
     console.log();
 
-    // this.myFakeDataService.getDataArray().subscribe(
-    //   (data: PositionReport1[]) => {
-    //
-    //     let reportMap = new Map<number, PositionReport1[]>;
-    //
-    //     for(let i: number = 0; i < 2; i++){
-    //       reportMap.set(i, data)
-    //     }
-    //
-    //
-    //     data.forEach(this.filterPositionReportByDate, "2023-01-01T00:05:17");
-    //
-    //     console.log(data)
-    //   }
-    // );
+    const dateObject: Date = new Date("2023-01-01T00:05:17")
+    const dateStringThisArg: string = dateObject.toISOString();
 
-    console.log("I ought to be leaving Init");
+
+    positionReportMap.forEach(this.filterPositionReportByDate);
+
+        console.log(positionReportMap)
+
+
   }
-
 
 
   ngOnDestroy() {
 
   }
-
   stopWebsocket() {
     // Unsubscribe from WebSocket messages and close the connection
     this.messageSubscription.unsubscribe();
     this.webSocketService.closeConnection();
   }
-
 
   subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
@@ -113,22 +115,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
-
-
         for (let message of messageList){
           this.payloadArray.push(message)
           console.log(message);
 
-
-
         }
-
       }
-
     );
-
   }
-
 
   clearData() {
     // this.stopWebsocket();
@@ -136,15 +130,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  // Convert the string representation of  date to Unix representation in seconds -> then filter the array
-  // thisArg is the cutoff date, represented in seconds
 
-filterPositionReportByDate(value: PositionReport1[], key: number , map: Map<number, PositionReport1[]>, thisArg: string) {
-
-  //   "!" is a non-null assertion that tells the compiler the value will NOT be null or undefined
-  map.set(key, map.get(key)!.filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(thisArg)));
-
-};
 
 
 
