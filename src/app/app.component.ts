@@ -13,7 +13,6 @@ import { JsonReaderService } from './services/json-reader.service';
 import { PositionReport } from './position-report';
 import { Map as GeographicMap} from './map/map';
 import { MyFakeDataService } from './my-fake-data.service';
-import { PositionReport1 } from './position-report-1';
 
 
 @Component({
@@ -35,6 +34,7 @@ import { PositionReport1 } from './position-report-1';
 export class AppComponent implements OnInit, OnDestroy {
 
   public messageSubscription: Subscription = Subscription.EMPTY;
+  public positionsReportMap: Map<number, PositionReport[]>;
 
 
 
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // Convert the string representation of  date to Unix representation in seconds -> then filter the array
   // thisArg is the cutoff date, represented in seconds
 
-  filterPositionReportByDate(value: PositionReport1[], key: number , map: Map<number, PositionReport1[]>) {
+  filterPositionReportByDate(value: PositionReport[], key: number , map: Map<number, PositionReport[]>) {
 
     //   "!" is a non-null assertion that tells the compiler the value will NOT be null or undefined
     // map.set(key, map.get(key)!.filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(fred)));
@@ -72,34 +72,22 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log("here I am, in Init");
 
-    this.myFakeDataService.getDataArray();
-    let positionReportResponse = this.myFakeDataService.getDataArray() as PositionReport1[];
-
-    console.log(positionReportResponse);
-
-    console.log("This should hold the map representation of the PositionReport1 data");
-    let positionsReportMap = this.myFakeDataService.convertArrayToMap(positionReportResponse);
-    console.log("XXXXXXXXXXXXXXX");
-    console.log("ZZZZZZZZZZZZ");
-    console.log(positionsReportMap);
-
-    let positionReportMap=  this.myFakeDataService.filterMapByDate(positionsReportMap);
-
-     console.log("YYYYYYYYYYY");
-     console.log("PPPPPPPPPPPPP");
-     console.log(positionReportMap);
-    console.log("I WORKED????????");
-
-
-    console.log();
-
-    const dateObject: Date = new Date("2023-01-01T00:05:17")
-    const dateStringThisArg: string = dateObject.toISOString();
-
-
-    // positionReportMap.forEach(this.filterPositionReportByDate);
+    // this.myFakeDataService.getDataArray();
+    // let positionReportResponse = this.myFakeDataService.getDataArray() as PositionReport[];
     //
-    //     console.log(positionReportMap)
+    // console.log(positionReportResponse);
+    //
+    // let positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(positionReportResponse);
+    //
+    // console.log("This should hold the map representation of the PositionReport data");
+    // console.log(positionsReportMap);
+
+    // let positionReportMap=  this.myFakeDataService.filterMapByDate(positionsReportMap);
+    //
+    //  console.log("This is a filtered map of position reports")
+    //  console.log(positionReportMap);
+
+
 
 
   }
@@ -117,6 +105,24 @@ export class AppComponent implements OnInit, OnDestroy {
   subscribeToWebSocket() {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (messageList: PositionReport[]) => {
+
+        let positionReportResponse = messageList as PositionReport[];
+
+        // Append a 'Z' to each timestamp to make it parseable for Typescript
+        for(let i = 0; i<positionReportResponse.length; i++){
+          positionReportResponse[i].BaseDateTime = positionReportResponse[i].BaseDateTime + "Z";
+        }
+
+        this.positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(positionReportResponse)
+
+        console.log("This *should* hold a map representation of the PositionReport data");
+        console.log(this.positionsReportMap);
+
+        // Creating filter date based on the *last* record in the array
+        let filterDate = new Date(positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
+
+        this.positionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
@@ -139,26 +145,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-scaleNumberToHex(input: number) {
-    let sourceMin = 0;
-    let sourceMax = 99;
-    let targetMin = 0;
-    let targetMax = 255
-    let scaledIntResult = Math.floor((input - sourceMin) * (targetMax - targetMin) / (sourceMax - sourceMin) + targetMin);
-    let hexValue = scaledIntResult.toString(16);
-    return hexValue.length === 1 ? "0" + hexValue : hexValue;
-  }
+// scaleNumberToHex(input: number) {
+//     let sourceMin = 0;
+//     let sourceMax = 99;
+//     let targetMin = 0;
+//     let targetMax = 255
+//     let scaledIntResult = Math.floor((input - sourceMin) * (targetMax - targetMin) / (sourceMax - sourceMin) + targetMin);
+//     let hexValue = scaledIntResult.toString(16);
+//     return hexValue.length === 1 ? "0" + hexValue : hexValue;
+//   }
 
-mmsiToColor(mmsi: string) {
-    let hexColor = "";
-    let startIdx = 3;
-    for (let i = 0; i < 4; i++) {
-      let colorBasis = mmsi.toString().substring(startIdx, startIdx + 2);
-      hexColor += this.scaleNumberToHex(Number(colorBasis));
-      startIdx += 2;
-    }
-
-    return `#${hexColor}`;
-  }
+// mmsiToColor(mmsi: string) {
+//     let hexColor = "";
+//     let startIdx = 3;
+//     for (let i = 0; i < 4; i++) {
+//       let colorBasis = mmsi.toString().substring(startIdx, startIdx + 2);
+//       hexColor += this.scaleNumberToHex(Number(colorBasis));
+//       startIdx += 2;
+//     }
+//
+//     return `#${hexColor}`;
+//   }
 
 }
