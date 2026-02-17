@@ -74,12 +74,12 @@ msgs=[{"mmsi": 367488370, "BaseDateTime": "2023-01-01T00:05:15", "LAT": 36.91130
 
     // Now, load the array of position reports into the data map
     for (let i = 0; i < prArr.length; i++) {
-      const existingArray = prMap.get(prArr[i].mmsi) ?? [];
+      const existingArray = prMap.get(prArr[i].MMSI) ?? [];
       // 2. Add the new element to the array
       existingArray.push(prArr[i]);
 
       // 3. Update the map with the modified array (even if the key was new)
-      prMap.set(prArr[i].mmsi, existingArray);
+      prMap.set(prArr[i].MMSI, existingArray);
     }
 
     return prMap;

@@ -67,6 +67,7 @@ Run
  ```
 npm install leaflet
 npm install @types/leaflet
+npm install --save leaflet-ant-path
 ```
 
 

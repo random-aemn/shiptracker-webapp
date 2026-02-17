@@ -34,7 +34,7 @@ import { MyFakeDataService } from './my-fake-data.service';
 export class AppComponent implements OnInit, OnDestroy {
 
   public messageSubscription: Subscription = Subscription.EMPTY;
-  public positionsReportMap: Map<number, PositionReport[]>;
+  public positionsReportMap: Map<number, PositionReport[]> = new Map;
 
 
 
@@ -108,9 +108,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
         let positionReportResponse = messageList as PositionReport[];
 
+        console.log("The messageList is: " + positionReportResponse.length + " long");
+
         // Append a 'Z' to each timestamp to make it parseable for Typescript
         for(let i = 0; i<positionReportResponse.length; i++){
           positionReportResponse[i].BaseDateTime = positionReportResponse[i].BaseDateTime + "Z";
+          console.log("The MMSI for each ship follows:");
+          console.log(positionReportResponse[i]);
+          console.log(positionReportResponse[i].MMSI);
         }
 
         this.positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(positionReportResponse)

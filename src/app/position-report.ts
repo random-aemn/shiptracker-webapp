@@ -1,6 +1,6 @@
 export interface PositionReport {
 
-    mmsi:                       number;
+    MMSI:                       number;
     BaseDateTime:               string;
     LAT:                        number;
     LON:                        number;
