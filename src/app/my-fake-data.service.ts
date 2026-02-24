@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import {PositionReport} from './position-report';
-import {Browser} from 'leaflet';
+import {Browser, LatLng} from 'leaflet';
 import pointer = Browser.pointer;
 
 @Injectable({
@@ -9,24 +9,38 @@ import pointer = Browser.pointer;
 })
 export class MyFakeDataService {
 
-msgs=[{"mmsi": 367488370, "BaseDateTime": "2023-01-01T00:05:15", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}];
-
-//   Test that given a set of these position reports, set the horizon date to: something that precedes the timestamps, something that is after all the timestamps, and
-//   a timestamp value that cuts a section of the data set
-// dataArray: PositionReport1[] = [
-//   {"mmsi": 1, "BaseDateTime": "2023-01-01T00:05:17Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 1, "BaseDateTime": "2023-01-02T00:05:18Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 1, "BaseDateTime": "2023-01-03T00:05:19Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 1, "BaseDateTime": "2023-01-04T00:05:20Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//
-//   {"mmsi": 2, "BaseDateTime": "2023-01-01T00:05:17Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 2, "BaseDateTime": "2023-01-02T00:05:18Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 2, "BaseDateTime": "2023-01-03T00:05:19Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"},
-//   {"mmsi": 2, "BaseDateTime": "2023-01-04T00:05:20Z", "LAT": 36.91130, "LON": -75.32894, "Heading": 219.0, "VesselName": "RACHEL"}
-// ]
+  // mapArr is [latitude, longitude]
+  latLong!: [number, number];
 
 
   constructor() { }
+
+  setLatLongsFromMap(aPositionReportMap: Map<number, PositionReport[]>){
+
+    // let mapArr = [];
+    for (const [key, value] of aPositionReportMap) {
+      console.log(`Key: ${key}, Value: ${value}`);
+
+
+      let coordinates: [number, number];
+
+      for(let pr of value){
+        coordinates = [pr.LAT, pr.LON];
+        // this.latLong.push(coordinates);
+        this.latLong.push(pr.LAT, pr.LON);
+
+      }
+  
+    }
+        console.log("Below is this.latLong AKA the array holding the pairs of lats/longs");
+        console.log(this.latLong);
+  
+  }
+
+  getLatLongsFromMap(): [number, number] {
+    return this.latLong;
+
+  }
 
   // getData(): Observable<PositionReport[]> {
   //   return of(

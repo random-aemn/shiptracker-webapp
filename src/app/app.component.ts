@@ -126,7 +126,12 @@ export class AppComponent implements OnInit, OnDestroy {
         // Creating filter date based on the *last* record in the array
         let filterDate = new Date(positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
 
+        // Filter the set of position reports by date and assign it to the map
         this.positionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+
+        // Take the lats and longs from each position report and assign it to a variable in the service
+        console.log("I'm calling the service.setLatLongsFromMap");
+        this.myFakeDataService.setLatLongsFromMap(this.positionsReportMap);
 
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
@@ -139,6 +144,8 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+
 
   clearData() {
     // this.stopWebsocket();
