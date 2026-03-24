@@ -10,6 +10,7 @@ import { PositionReport } from '../position-report';
 
 @Component({
   selector: 'app-geo-map',
+  standalone: true,
   imports: [],
   templateUrl: './geo-map.html',
   styleUrl: './geo-map.css'
@@ -17,13 +18,13 @@ import { PositionReport } from '../position-report';
 
 export class GeoMap  implements AfterViewInit, OnInit  {
 
-  // @Input() message!: Map<number, PositionReport[]>;
+  @Input() message!: Map<number, PositionReport[]>;
 
 
   cbCenter: L.LatLngExpression = [38.5214, -77.1050];
 
   private displayMap! : L.Map;
-  
+
   private cbOutline: any;
 
   constructor(
@@ -59,7 +60,7 @@ export class GeoMap  implements AfterViewInit, OnInit  {
   }
 
 
-  
+
 
   // Method that accepts an array and then converts it to GeoJSON - Currently not working because we're passing in an Object, not an array
   convertToGeoJSON(data: any[]): any {

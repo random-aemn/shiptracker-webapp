@@ -11,8 +11,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { JsonReaderService } from './services/json-reader.service';
 import { PositionReport } from './position-report';
-import { GeoMap as GeographicMap} from './map/geoMap';
 import { MyFakeDataService } from './services/my-fake-data.service';
+import { GeoMap} from './map/geoMap';
 
 
 @Component({
@@ -24,7 +24,8 @@ import { MyFakeDataService } from './services/my-fake-data.service';
     MatInput,
     MatFormField,
     NgForOf,
-    GeographicMap],
+    GeoMap
+    ],
   styleUrl: './app.component.css'
 })
 
