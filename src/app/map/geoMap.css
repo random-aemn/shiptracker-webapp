@@ -17,3 +17,7 @@
   #cbMap {
     height: 100%;
   }
+
+  div{
+    border: dashed red 2px;
+  }

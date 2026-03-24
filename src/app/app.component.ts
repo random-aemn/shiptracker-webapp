@@ -11,22 +11,20 @@ import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { JsonReaderService } from './services/json-reader.service';
 import { PositionReport } from './position-report';
-import { Map as GeographicMap} from './map/map';
-import { MyFakeDataService } from './my-fake-data.service';
+import { GeoMap as GeographicMap} from './map/geoMap';
+import { MyFakeDataService } from './services/my-fake-data.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: true,
-  imports: [
-    MatLabel,
+  imports: [MatLabel,
     MatButtonModule,
     MatInput,
     MatFormField,
     NgForOf,
-    GeographicMap
-],
+    GeographicMap],
   styleUrl: './app.component.css'
 })
 
@@ -128,6 +126,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Filter the set of position reports by date and assign it to the map
         this.positionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+
+        /*
+        Leaflet should be able to handle FeatureCollections
+        - ours will have multiple point features and a single line-string feature
+
+        Pass the entire this.positionsReportMap, via the service, to map.ts
+        Once it is in the map.ts component, I can iterate through, grab the lats/longs, assign them to a variable to generate the ant path
+        We can also assign the positionReportMap data to a FeatureCollection to enable the mouseover events
+        */
 
         // Take the lats and longs from each position report and assign it to a variable in the service
         console.log("I'm calling the service.setLatLongsFromMap");
