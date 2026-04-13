@@ -34,6 +34,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public messageSubscription: Subscription = Subscription.EMPTY;
   public positionsReportMap: Map<number, PositionReport[]> = new Map;
+  public filteredPositionsReportMap: Map<number, PositionReport[]> = new Map;
+
 
 
 
@@ -126,7 +128,9 @@ export class AppComponent implements OnInit, OnDestroy {
         let filterDate = new Date(positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
 
         // Filter the set of position reports by date and assign it to the map
-        this.positionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+        this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+        console.log("The value of this.filteredPositionsReportMap is: ");
+        console.log(this.filteredPositionsReportMap)
 
         /*
         Leaflet should be able to handle FeatureCollections
@@ -139,7 +143,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Take the lats and longs from each position report and assign it to a variable in the service
         console.log("I'm calling the service.setLatLongsFromMap");
-        this.myFakeDataService.setLatLongsFromMap(this.positionsReportMap);
+        this.myFakeDataService.setLatLongsFromMap(this.filteredPositionsReportMap);
 
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.

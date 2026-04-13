@@ -12,8 +12,8 @@ import { PositionReport } from '../position-report';
   selector: 'app-geo-map',
   standalone: true,
   imports: [],
-  templateUrl: './geo-map.html',
-  styleUrl: './geo-map.css'
+  templateUrl: './geoMap.html',
+  styleUrl: './geoMap.css',
 })
 
 export class GeoMap  implements AfterViewInit, OnInit  {
@@ -40,11 +40,11 @@ export class GeoMap  implements AfterViewInit, OnInit  {
 
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
 
-  //   console.log("The value of this.PositionReportMap in app.component has changed to: ");
-  //   console.log(this.message);
-  // }
+    console.log("The value of this.message in geoMap has changed to: ");
+    console.log(this.message);
+  }
 
 
 
