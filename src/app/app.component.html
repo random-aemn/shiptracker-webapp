@@ -22,7 +22,7 @@
 
     <div>
 <!--      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="subscribeToWebSocket()">-->
-      <button mat-stroked-button (click)="subscribeToWebSocket()">
+      <button mat-stroked-button [disabled]=!this.messageSubscription.closed (click)="subscribeToWebSocket()">
         Start
       </button>
     </div>

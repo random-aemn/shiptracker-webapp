@@ -88,7 +88,7 @@ export class MyFakeDataService {
 
     // Now, load the array of position reports into the data map
     for (let i = 0; i < prArr.length; i++) {
-      const existingArray = prMap.get(prArr[i].MMSI) ?? [];
+      const existingArray = prMap.get(prArr[i].MMSI) ?? []; // ?? is the nullish coalescing operator - the fallback value is an empty array
       // 2. Add the new element to the array
       existingArray.push(prArr[i]);
 

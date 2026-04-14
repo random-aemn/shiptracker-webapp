@@ -36,18 +36,12 @@ export class AppComponent implements OnInit, OnDestroy {
   public positionsReportMap: Map<number, PositionReport[]> = new Map;
   public filteredPositionsReportMap: Map<number, PositionReport[]> = new Map;
 
-
-
-
   title = 'RachelTracker';
   payload: any = {};
   payloadArray: any = [];
   shipList = Map<number, PositionReport[]>
 
   MAX_NUM_POSITION_REPORTS = 10;
-
-
-  map = new Map<number, PositionReport[]>();
 
 
   constructor(private webSocketService: WebSocketService,
@@ -57,39 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-  // Convert the string representation of  date to Unix representation in seconds -> then filter the array
-  // thisArg is the cutoff date, represented in seconds
-
-  filterPositionReportByDate(value: PositionReport[], key: number , map: Map<number, PositionReport[]>) {
-
-    //   "!" is a non-null assertion that tells the compiler the value will NOT be null or undefined
-    // map.set(key, map.get(key)!.filter(pr => Date.parse(pr.BaseDateTime) > Date.parse(fred)));
-    console.log("hey, inside the filter position method - 'this' is: " + this)
-    console.info("the key is: " + key);
-    // console.log("the value is: " + value);
-
-  };
-
   ngOnInit() {
     console.log("here I am, in Init");
-
-    // this.myFakeDataService.getDataArray();
-    // let positionReportResponse = this.myFakeDataService.getDataArray() as PositionReport[];
-    //
-    // console.log(positionReportResponse);
-    //
-    // let positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(positionReportResponse);
-    //
-    // console.log("This should hold the map representation of the PositionReport data");
-    // console.log(positionsReportMap);
-
-    // let positionReportMap=  this.myFakeDataService.filterMapByDate(positionsReportMap);
-    //
-    //  console.log("This is a filtered map of position reports")
-    //  console.log(positionReportMap);
-
-
-
 
   }
 
@@ -97,24 +60,28 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
 
   }
+
+
   stopWebsocket() {
     // Unsubscribe from WebSocket messages and close the connection
     this.messageSubscription.unsubscribe();
     this.webSocketService.closeConnection();
   }
 
+
   subscribeToWebSocket() {
+    // Subscribe to the websocket
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
-      (messageList: PositionReport[]) => {
+      (messageList: PositionReport[]) => { //messageList holds what is returned from the subscription
 
-        let positionReportResponse = messageList as PositionReport[];
+        let positionReportResponse: PositionReport[] = messageList as PositionReport[]; // asserting that messageList will be an array of PositionReport object
 
-        console.log("The messageList is: " + positionReportResponse.length + " long");
+        console.log("The messageList is: " + messageList.length + " long");
 
         // Append a 'Z' to each timestamp to make it parseable for Typescript
         for(let i = 0; i<positionReportResponse.length; i++){
           positionReportResponse[i].BaseDateTime = positionReportResponse[i].BaseDateTime + "Z";
-          console.log("The MMSI for each ship follows:");
+          console.log("The Response and MMSI for each ship in the positionReportResponse Array follows:");
           console.log(positionReportResponse[i]);
           console.log(positionReportResponse[i].MMSI);
         }
