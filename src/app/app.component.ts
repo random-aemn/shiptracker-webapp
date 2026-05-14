@@ -70,7 +70,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   subscribeToWebSocket() {
-    // Subscribe to the websocket
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (messageList: PositionReport[]) => { //messageList holds what is returned from the subscription
 
@@ -130,11 +129,6 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.stopWebsocket();
     this.payloadArray = [];
   }
-
-
-
-
-
 
 // scaleNumberToHex(input: number) {
 //     let sourceMin = 0;
