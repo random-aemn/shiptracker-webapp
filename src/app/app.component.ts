@@ -10,7 +10,7 @@ import {MatButton} from '@angular/material/button';
 import {MatButtonModule} from '@angular/material/button';
 import {mmsiToColor} from '../assets/js/mmsiColorId';
 import { JsonReaderService } from './services/json-reader.service';
-import { PositionReport } from './position-report';
+import { PositionReport } from './models/position-report';
 import { MyFakeDataService } from './services/my-fake-data.service';
 import { GeoMap} from './map/geoMap';
 

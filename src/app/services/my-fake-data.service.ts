@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {PositionReport} from '../position-report';
+import {PositionReport} from '../models/position-report';
 import {Browser, LatLng} from 'leaflet';
 import pointer = Browser.pointer;
-
-    interface mmsiPrType {
-      mmsi: number;
-      positionReportArr: PositionReport[];
-    }
-
 
 
 @Injectable({
@@ -116,19 +110,19 @@ export class MyFakeDataService {
     // }
 
 
-        for (let reportKey of aPrMap.keys()){
-      let currentCargo = aPrMap.get(reportKey)![0].Vessel_CargoType;
-      let currentPositionReportList = aPrMap.get(reportKey);
+    //     for (let reportKey of aPrMap.keys()){
+    //   let currentCargo = aPrMap.get(reportKey)![0].CargoTxt;
+    //   let currentPositionReportList = aPrMap.get(reportKey);
 
-      let mmsiPr: mmsiPrType = {reportKey, currentPositionReportList};
+    //   let mmsiPr: MmsiPrType = {reportKey, currentPositionReportList};
     
-      let cargoMmsiMap = new Map<string, mmsiPrType[]>
+    //   let cargoMmsiMap = new Map<string, MmsiPrType[]>
 
-        if (cargoMmsiMap.has(currentCargo)){
-            cargoMmsiMap.get(currentCargo)!.push(mmsiPr);
+    //     if (cargoMmsiMap.has(currentCargo)){
+    //         cargoMmsiMap.get(currentCargo)!.push(mmsiPr);
 
-        }
-    }
+    //     }
+    // }
 
   }
 

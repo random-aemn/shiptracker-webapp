@@ -17,8 +17,8 @@ export interface PositionReport {
     Draft:	                    number;
     Cargo:	                    number;
     TransceiverClass:	        string;
-    Vessel_CargoType:	        string;
-    Vessel_CargoClass:	        string;
+    VesselTypeTxt:  	        string;
+    CargoTxt:       	        string;
     Hazardous:                  boolean;
     NavStatus:                  string;
 
