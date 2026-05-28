@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {PositionReport} from '../models/position-report';
-import {Browser, LatLng} from 'leaflet';
+import { PositionReport } from '../models/position-report';
+import { MmsiPrType } from '../models/mmsi-positionReport-type';
+import { Browser, LatLng } from 'leaflet';
 import pointer = Browser.pointer;
 
 
@@ -31,11 +32,11 @@ export class MyFakeDataService {
         this.latLong.push(pr.LAT, pr.LON);
 
       }
-  
+
     }
         console.log("Below is this.latLong AKA the array holding the pairs of lats/longs");
         console.log(this.latLong);
-  
+
   }
 
   getLatLongsFromMap(): [number, number] {
@@ -97,10 +98,28 @@ export class MyFakeDataService {
 
   public createCargoMapFromPrMap(aPrMap: Map<number, PositionReport[]>){
 
+    console.log("ZEDICHUS");
+    console.log(aPrMap.size);
+
+    // for (const [mmsi, currentPositionReportList] of aPrMap){
+    //   let currentCargo = currentPositionReportList[0].CargoTxt;
+    //   console.log("The current cargo type of aPrMap is: " )
+    //
+    // }
+
+    for (let key of aPrMap.keys()){
+      let currentCargo = aPrMap.get(key)![0].CargoTxt;
+      console.log("WILL THIS WORK?");
+    }
+
+
+
+
+
     // for (const [mmsi, currentPositionReportList] of aPrMap){
     //   let currentCargo = currentPositionReportList[0].Vessel_CargoType;
     //   let mmsiPr: mmsiPrType = {mmsi, currentPositionReportList};
-    
+
     //   let cargoMmsiMap = new Map<string, mmsiPrType[]>
 
     //     if (cargoMmsiMap.has(currentCargo)){
@@ -115,7 +134,7 @@ export class MyFakeDataService {
     //   let currentPositionReportList = aPrMap.get(reportKey);
 
     //   let mmsiPr: MmsiPrType = {reportKey, currentPositionReportList};
-    
+
     //   let cargoMmsiMap = new Map<string, MmsiPrType[]>
 
     //     if (cargoMmsiMap.has(currentCargo)){

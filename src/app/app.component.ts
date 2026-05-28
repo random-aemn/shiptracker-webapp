@@ -92,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Creating filter date based on the *last* record in the array
         let filterDate = new Date(positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
+        console.log("the filter date being sent to the filterMapByDate function is: " + filterDate);
 
         // Filter the set of position reports by date and assign it to the map
         this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
@@ -106,6 +107,8 @@ export class AppComponent implements OnInit, OnDestroy {
         Once it is in the map.ts component, I can iterate through, grab the lats/longs, assign them to a variable to generate the ant path
         We can also assign the positionReportMap data to a FeatureCollection to enable the mouseover events
         */
+       console.log("QQQQQQQQQQQQQQQQQQQQ");
+       this.myFakeDataService.createCargoMapFromPrMap(this.filteredPositionsReportMap);
 
         // Take the lats and longs from each position report and assign it to a variable in the service
         console.log("I'm calling the service.setLatLongsFromMap");
