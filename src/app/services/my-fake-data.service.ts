@@ -21,7 +21,6 @@ export class MyFakeDataService {
 
     // let mapArr = [];
     for (const [key, value] of aPositionReportMap) {
-      console.log(`Key: ${key}, Value: ${value}`);
 
 
       let coordinates: [number, number];
@@ -34,8 +33,7 @@ export class MyFakeDataService {
       }
 
     }
-        console.log("Below is this.latLong AKA the array holding the pairs of lats/longs");
-        console.log(this.latLong);
+
 
   }
 
@@ -44,30 +42,32 @@ export class MyFakeDataService {
 
   }
 
-  loadPositionReportsFromArray(prArr: PositionReport[]): Map<number, PositionReport[]>{
+  loadPositionReportsFromArray(aPrMap: Map<number, PositionReport[]>, prArr: PositionReport[]): Map<number, PositionReport[]>{
 
-  let prMap = new Map<number, PositionReport[]>();
+  // let prMap = new Map<number, PositionReport[]>();
 
     // Now, load the array of position reports into the data map
     for (let i = 0; i < prArr.length; i++) {
-      const existingArray = prMap.get(prArr[i].MMSI) ?? []; // ?? is the nullish coalescing operator - the fallback value is an empty array
+      const existingArray = aPrMap.get(prArr[i].MMSI) ?? []; // ?? is the nullish coalescing operator - the fallback value is an empty array
       // 2. Add the new element to the array
       existingArray.push(prArr[i]);
 
       // 3. Update the map with the modified array (even if the key was new)
-      prMap.set(prArr[i].MMSI, existingArray);
+      aPrMap.set(prArr[i].MMSI, existingArray);
     }
 
-    return prMap;
+    return aPrMap;
 
   }
 
   filterMapByDate(prMap: Map<number, PositionReport[]>, inHorizonDate: Date) : Map<number, PositionReport[]> {
-  // Records with a BaseDateTime equal to or before to horizonDate will be deleted
+
     prMap.forEach((prArrayData, key) => {
       let deletionCount = 0;
       for (let i = 0; i < prArrayData.length; i++) {
         let thisDate = new Date(prArrayData[i].BaseDateTime);
+        console.log("The filter date is: " + inHorizonDate.toISOString() + " the item's date at the array index " + i + " is: " + thisDate.toISOString())
+
         if (thisDate <= inHorizonDate) {
           deletionCount++;
         }
@@ -75,8 +75,13 @@ export class MyFakeDataService {
           break;
       }
       if (deletionCount > 0) {
-        console.log("slicing from 0 to " + (deletionCount));
-        let filteredArr = prArrayData.slice(deletionCount)
+        console.log("DeletionCount is: " + deletionCount);
+        console.log("The content of prArrayData is: ")
+        console.info(prArrayData);
+        let filteredArr = prArrayData.slice(deletionCount);
+
+        console.log("After slicing, the value of the filteredArr is:");
+        console.info(filteredArr);
         // If the array no longer contains data, delete the mmsi from the prMap
         if (filteredArr.length === 0) {
           prMap.delete(key);
@@ -91,15 +96,9 @@ export class MyFakeDataService {
   }
 
 
-    // setLatLongsFromMap(aPositionReportMap: Map<number, PositionReport[]>){
-
-
-
 
   public createCargoMapFromPrMap(aPrMap: Map<number, PositionReport[]>){
 
-    console.log("ZEDICHUS");
-    console.log(aPrMap.size);
 
     // for (const [mmsi, currentPositionReportList] of aPrMap){
     //   let currentCargo = currentPositionReportList[0].CargoTxt;
@@ -109,7 +108,6 @@ export class MyFakeDataService {
 
     for (let key of aPrMap.keys()){
       let currentCargo = aPrMap.get(key)![0].CargoTxt;
-      console.log("WILL THIS WORK?");
     }
 
 

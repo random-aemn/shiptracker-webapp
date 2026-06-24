@@ -42,8 +42,6 @@ export class GeoMap  implements AfterViewInit, OnInit  {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    console.log("The value of this.message in geoMap has changed to: ");
-    console.log(this.message);
   }
 
 
@@ -54,8 +52,6 @@ export class GeoMap  implements AfterViewInit, OnInit  {
 
     latLongArr = this.myFakeDataService.getLatLongsFromMap;
 
-    console.log("In the map.ts file, the below is the array of lats and longs");
-    console.log(latLongArr);
     return latLongArr;
   }
 
@@ -89,8 +85,6 @@ export class GeoMap  implements AfterViewInit, OnInit  {
 
   private initMap(): void {
 
-    console.log("this.map in the geoMap initMap function is: ")
-    console.log(this.displayMap);
 
     this.displayMap = L.map('cbMap', {
       center: this.cbCenter,

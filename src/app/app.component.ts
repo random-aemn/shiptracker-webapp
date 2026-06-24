@@ -52,7 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log("here I am, in Init");
 
   }
 
@@ -75,29 +74,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
         let positionReportResponse: PositionReport[] = messageList as PositionReport[]; // asserting that messageList will be an array of PositionReport object
 
-        console.log("The messageList is: " + messageList.length + " long");
-
         // Append a 'Z' to each timestamp to make it parseable for Typescript
         for(let i = 0; i<positionReportResponse.length; i++){
           positionReportResponse[i].BaseDateTime = positionReportResponse[i].BaseDateTime + "Z";
-          console.log("The Response and MMSI for each ship in the positionReportResponse Array follows:");
-          console.log(positionReportResponse[i]);
-          console.log(positionReportResponse[i].MMSI);
+
         }
 
-        this.positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(positionReportResponse)
+        this.positionsReportMap = this.myFakeDataService.loadPositionReportsFromArray(this.positionsReportMap, positionReportResponse)
 
-        console.log("This *should* hold a map representation of the PositionReport data");
-        console.log(this.positionsReportMap);
 
         // Creating filter date based on the *last* record in the array
         let filterDate = new Date(positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
-        console.log("the filter date being sent to the filterMapByDate function is: " + filterDate);
+        // Subtract 5 minutes from the filterDate
+        filterDate.setMinutes(filterDate.getMinutes() - 5);
+        // console.log("Horizon date as received: " + positionReportResponse[positionReportResponse.length - 1].BaseDateTime);
+        // console.log("the filter date being sent to the filterMapByDate function is: " + filterDate);
 
         // Filter the set of position reports by date and assign it to the map
         this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
-        console.log("The value of this.filteredPositionsReportMap is: ");
-        console.log(this.filteredPositionsReportMap)
 
         /*
         Leaflet should be able to handle FeatureCollections
@@ -107,12 +101,10 @@ export class AppComponent implements OnInit, OnDestroy {
         Once it is in the map.ts component, I can iterate through, grab the lats/longs, assign them to a variable to generate the ant path
         We can also assign the positionReportMap data to a FeatureCollection to enable the mouseover events
         */
-       console.log("QQQQQQQQQQQQQQQQQQQQ");
-       this.myFakeDataService.createCargoMapFromPrMap(this.filteredPositionsReportMap);
+       // this.myFakeDataService.createCargoMapFromPrMap(this.filteredPositionsReportMap);
 
         // Take the lats and longs from each position report and assign it to a variable in the service
-        console.log("I'm calling the service.setLatLongsFromMap");
-        this.myFakeDataService.setLatLongsFromMap(this.filteredPositionsReportMap);
+        // this.myFakeDataService.setLatLongsFromMap(this.filteredPositionsReportMap);
 
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
