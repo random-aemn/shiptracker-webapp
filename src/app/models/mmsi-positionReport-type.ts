@@ -1,4 +1,4 @@
-import { PositionReport } from "./position-report";
+ import { PositionReport } from "./position-report";
 
 export interface MmsiPrType {
       mmsi: number;
