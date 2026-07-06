@@ -97,51 +97,26 @@ export class MyFakeDataService {
 
 
 
-  public createCargoMapFromPrMap(aPrMap: Map<number, PositionReport[]>){
+  public createCargoMapFromPrMap(aPrMap: Map<Number, PositionReport[]>) {
 
+    let cargo2MmsiMap = new Map<String, MmsiPrType[]>
 
-    // for (const [mmsi, currentPositionReportList] of aPrMap){
-    //   let currentCargo = currentPositionReportList[0].CargoTxt;
-    //   console.log("The current cargo type of aPrMap is: " )
-    //
-    // }
+    for(const [mmsi, currentPositionReportList] of aPrMap){
+      let currentCargo = currentPositionReportList[0].CargoTxt;
 
-    for (let key of aPrMap.keys()){
-      let currentCargo = aPrMap.get(key)![0].CargoTxt;
+      let mmsiPr = {mmsi, currentPositionReportList};
+
+      if(cargo2MmsiMap.has(currentCargo)){
+        cargo2MmsiMap.get(currentCargo).set(mmsiPr);
+      }
+      else {
+        cargo2MmsiMap.set(currentCargo, mmsiPr);
+      }
+
     }
 
-
-
-
-
-    // for (const [mmsi, currentPositionReportList] of aPrMap){
-    //   let currentCargo = currentPositionReportList[0].Vessel_CargoType;
-    //   let mmsiPr: mmsiPrType = {mmsi, currentPositionReportList};
-
-    //   let cargoMmsiMap = new Map<string, mmsiPrType[]>
-
-    //     if (cargoMmsiMap.has(currentCargo)){
-    //         cargoMmsiMap.get(currentCargo)!.push(mmsiPr);
-
-    //     }
-    // }
-
-
-    //     for (let reportKey of aPrMap.keys()){
-    //   let currentCargo = aPrMap.get(reportKey)![0].CargoTxt;
-    //   let currentPositionReportList = aPrMap.get(reportKey);
-
-    //   let mmsiPr: MmsiPrType = {reportKey, currentPositionReportList};
-
-    //   let cargoMmsiMap = new Map<string, MmsiPrType[]>
-
-    //     if (cargoMmsiMap.has(currentCargo)){
-    //         cargoMmsiMap.get(currentCargo)!.push(mmsiPr);
-
-    //     }
-    // }
-
   }
+
 
 
 

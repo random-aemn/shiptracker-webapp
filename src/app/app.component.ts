@@ -92,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Filter the set of position reports by date and assign it to the map
         this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+        this.myFakeDataService.createCargoMapFromPrMap(this.filteredPositionsReportMap);
 
         /*
         Leaflet should be able to handle FeatureCollections
