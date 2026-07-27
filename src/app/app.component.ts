@@ -13,6 +13,7 @@ import { JsonReaderService } from './services/json-reader.service';
 import { PositionReport } from './models/position-report';
 import { MyFakeDataService } from './services/my-fake-data.service';
 import { GeoMap} from './map/geoMap';
+import {MmsiPrType} from './models/mmsi-positionReport-type';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public messageSubscription: Subscription = Subscription.EMPTY;
   public positionsReportMap: Map<number, PositionReport[]> = new Map;
   public filteredPositionsReportMap: Map<number, PositionReport[]> = new Map;
+  public cargoMap: Map<string, MmsiPrType[]> = new Map;
 
   title = 'RachelTracker';
   payload: any = {};
@@ -72,6 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (messageList: PositionReport[]) => { //messageList holds what is returned from the subscription
 
+        //  NOTE: the values in the data-headers.csv file MUST match the attributes in the PositionReport model in order to map correctly
         let positionReportResponse: PositionReport[] = messageList as PositionReport[]; // asserting that messageList will be an array of PositionReport object
 
         // Append a 'Z' to each timestamp to make it parseable for Typescript
@@ -92,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Filter the set of position reports by date and assign it to the map
         this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
-        this.myFakeDataService.createCargoMapFromPrMap(this.filteredPositionsReportMap);
+        this.cargoMap = this.myFakeDataService.createCargoMapFromPrMap(this.cargoMap, this.filteredPositionsReportMap);
 
         /*
         Leaflet should be able to handle FeatureCollections
@@ -112,7 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // message.plotColor = mmsiToColor(message.MMSI);
         for (let message of messageList){
           this.payloadArray.push(message)
-          console.log(message);
+          // console.log(message);
 
         }
       }

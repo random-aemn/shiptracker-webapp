@@ -66,7 +66,7 @@ export class MyFakeDataService {
       let deletionCount = 0;
       for (let i = 0; i < prArrayData.length; i++) {
         let thisDate = new Date(prArrayData[i].BaseDateTime);
-        console.log("The filter date is: " + inHorizonDate.toISOString() + " the item's date at the array index " + i + " is: " + thisDate.toISOString())
+        // console.log("The filter date is: " + inHorizonDate.toISOString() + " the item's date at the array index " + i + " is: " + thisDate.toISOString())
 
         if (thisDate <= inHorizonDate) {
           deletionCount++;
@@ -75,13 +75,13 @@ export class MyFakeDataService {
           break;
       }
       if (deletionCount > 0) {
-        console.log("DeletionCount is: " + deletionCount);
-        console.log("The content of prArrayData is: ")
-        console.info(prArrayData);
+        // console.log("DeletionCount is: " + deletionCount);
+        // console.log("The content of prArrayData is: ")
+        // console.info(prArrayData);
         let filteredArr = prArrayData.slice(deletionCount);
 
-        console.log("After slicing, the value of the filteredArr is:");
-        console.info(filteredArr);
+        // console.log("After slicing, the value of the filteredArr is:");
+        // console.info(filteredArr);
         // If the array no longer contains data, delete the mmsi from the prMap
         if (filteredArr.length === 0) {
           prMap.delete(key);
@@ -97,23 +97,30 @@ export class MyFakeDataService {
 
 
 
-  public createCargoMapFromPrMap(aPrMap: Map<Number, PositionReport[]>) {
+  public createCargoMapFromPrMap(aMapOfCargoAndPositionReports: Map<string, MmsiPrType[]>, aPrMap: Map<number, PositionReport[]>): Map<string, MmsiPrType[]> {
 
-    let cargo2MmsiMap = new Map<String, MmsiPrType[]>
+    let cargo2MmsiMap = new Map<string, MmsiPrType[]>()
 
     for(const [mmsi, currentPositionReportList] of aPrMap){
-      let currentCargo = currentPositionReportList[0].CargoTxt;
+      // const mmsiStr = String(mmsi);
+      let currentCargo = currentPositionReportList[0]?.CargoTxt ?? "Unknown";
+      // const fred: PositionReport= currentPositionReportList[0];
 
-      let mmsiPr = {mmsi, currentPositionReportList};
 
-      if(cargo2MmsiMap.has(currentCargo)){
-        cargo2MmsiMap.get(currentCargo).set(mmsiPr);
+      const mmsiPr: MmsiPrType = {mmsi, positionReportArr: currentPositionReportList};
+
+      const existingList = cargo2MmsiMap.get(currentCargo);
+
+      if(existingList){
+
+        existingList.push(mmsiPr);
       }
       else {
-        cargo2MmsiMap.set(currentCargo, mmsiPr);
+        cargo2MmsiMap.set(currentCargo, [mmsiPr]);
       }
 
     }
+    return cargo2MmsiMap;
 
   }
 
