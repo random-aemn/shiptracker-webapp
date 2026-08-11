@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public positionsReportMap: Map<number, PositionReport[]> = new Map;
   public filteredPositionsReportMap: Map<number, PositionReport[]> = new Map;
   public cargoMap: Map<string, MmsiPrType[]> = new Map;
+  public cargoTypeLayerMap: Map<string, L.GeoJSON> = new Map;
 
   title = 'RachelTracker';
   payload: any = {};
@@ -49,8 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private webSocketService: WebSocketService,
               private jsonReader: JsonReaderService,
               private myFakeDataService: MyFakeDataService) {}
-
-
 
 
   ngOnInit() {
@@ -95,7 +94,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Filter the set of position reports by date and assign it to the map
         this.filteredPositionsReportMap = this.myFakeDataService.filterMapByDate(this.positionsReportMap, filterDate);
+        // convert the filtered map of PositionReport objects to be a map of cargoType as the key and an array of MmsiPrType as the value
+        // this allows us to group all the MMSIs and PositionReports associated with a particular cargo type
         this.cargoMap = this.myFakeDataService.createCargoMapFromPrMap(this.cargoMap, this.filteredPositionsReportMap);
+
+        //Create a Map that has all the cargo types as the keys and null geoJSON (required to instantiate the leaflet Layer)
+        this.cargoTypeLayerMap = this.myFakeDataService.createEmptyLayer(this.cargoTypeLayerMap, this.cargoMap);
+        this.clearLayers(this.cargoTypeLayerMap);
+
+        // this.myFakeDataService.maintainCargoTypeLayerMap(this.cargoTypeLayerMap, messageList)
+
 
         /*
         Leaflet should be able to handle FeatureCollections
@@ -120,6 +128,16 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  /*
+  Clear the data from all layers
+   */
+  public clearLayers(aLayerMap: Map<string, L.GeoJSON>){
+    for(let key in aLayerMap){
+      let currentLayer = aLayerMap.get(key);
+      currentLayer?.clearLayers();
+    }
   }
 
 

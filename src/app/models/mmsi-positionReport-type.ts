@@ -3,4 +3,6 @@
 export interface MmsiPrType {
       mmsi: number;
       positionReportArr: PositionReport[];
+      // mapLayer: L.GeoJSON;
+
     }

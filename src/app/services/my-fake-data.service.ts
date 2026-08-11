@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { PositionReport } from '../models/position-report';
 import { MmsiPrType } from '../models/mmsi-positionReport-type';
-import { Browser, LatLng } from 'leaflet';
+import L, {Browser, geoJSON, GeoJSON, LatLng} from 'leaflet';
 import pointer = Browser.pointer;
 
 
@@ -123,6 +123,30 @@ export class MyFakeDataService {
     return cargo2MmsiMap;
 
   }
+
+  /*
+  Create a L.geoJson layer for each cargo type (LNG, Passenger, etc.).
+   */
+  public createEmptyLayer(aCargoLayerMap: Map<string, L.GeoJSON>, aCargo2MmsiMap: Map<string, MmsiPrType[]>): Map<string, L.GeoJSON>{
+
+    for(let cargoKey of aCargo2MmsiMap.keys()){
+      if(!aCargoLayerMap.has(cargoKey)){
+        aCargoLayerMap.set(cargoKey, L.geoJSON(null))
+      }
+    }
+    return aCargoLayerMap;
+  }
+
+  // maintainCargoTypeLayerMap(aCargoTypeLayerMap: Map<string, L.GeoJSON>, aMessageList: PositionReport[]){
+  //
+  //   // const uniqueCargoTypes = aMessageList.filter
+  //   for(let message of aMessageList){
+  //     if(!aCargoTypeLayerMap.has(message.CargoTxt)){
+  //       aCargoTypeLayerMap.set(message.CargoTxt, L.geoJSON(null));
+  //     }
+  //   }
+  //
+  // }
 
 
 
