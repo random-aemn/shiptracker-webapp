@@ -130,8 +130,99 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
+
   /*
-  Clear the data from all layers
+    Takes the cargoMap as an argument
+    This contains the 'name' of the cargo type (e.g. passenger, LNG, etc.). AND an array of PositionReport objects
+
+    The function will consolidate all of the PositionReport objects into a single variable
+
+    This is necessary to convert them into a list of GeoJSON to create the Leaflet layers with data
+   */
+  public consolidateCargoPositionReports(aCargoMap: Map<string, MmsiPrType[]>): PositionReport[]{
+    let returnArray: PositionReport[] = new Array();
+
+
+      for(const valueArr of aCargoMap.values()){  // iterate through and get the array of MmsiPrTypes.  This contains a MMSI and an array of PositionReport objects
+
+        let arrayLength = valueArr.length;
+        for( let i: number = 0; i< arrayLength; i++){  // iterate through the array of MmsiPrType objects - this gives me all of the PositionReport objects
+
+          returnArray = returnArray.concat(valueArr[i].positionReportArr); // stash all the PositionReport objects in a single array to return
+        }
+    }
+    return returnArray;
+  }
+
+  public generateGeoJson(aPositionReportArr: PositionReport[]){
+
+    let geoPointArr = [];
+    let geoLineStringArr = [];
+    let coordinates: [number, number];
+    let cargoType : string | null = "";
+
+    for (let pr of aPositionReportArr) {
+
+      // Create an array of GeoJSON Points
+
+      let str = `{
+  "type":"Feature",
+  "geometry": {
+    "type":"Point",
+    "coordinates":[${pr.LAT},${pr.LON}]
+  },
+    "properties": {
+    "mmsi":${pr.MMSI},
+    "reportDate":"${pr.BaseDateTime}",
+    "latitude":${pr.LAT},
+    "longitude":${pr.LON},
+    "SOG":${pr.SOG ?? "Not Indicated"},
+    "COG":${pr.COG ?? "Not Indicated"},
+    "Heading":${pr.Heading ?? "Not Indicated"},
+    "VesselName":"${pr.VesselName ?? "Not Indicated"}",
+    "Length":${pr.Length ?? "Not Indicated"},
+    "Width":${pr.Width ?? "Not Indicated"},
+    "Draft":${pr.Draft ?? "Not Indicated"},
+    "CargoType":"${pr.CargoTxt ?? "Not Indicated"}",
+    "CargoClass":"${pr.CargoTxt ?? "Not Indicated"}",
+    "hazardous":"${pr.Hazardous ?? "Not Indicated"}",
+    "navStatus":"${pr.NavStatus ?? "Not Indicated"}"
+    }
+  }`
+
+      geoPointArr.push(str)
+
+
+      // Create list of coordinates for LineString
+
+      coordinates = [pr.LON, pr.LAT]
+      geoLineStringArr.push(coordinates)
+      cargoType = pr.CargoTxt;
+
+    }
+
+      let lineStr = `{"type": "Feature",
+    "geometry":{
+    "type": "LineString",
+    "coordinates": ${JSON.stringify(geoLineStringArr)}.
+    "properties": {"CargoType":${cargoType}}
+    }
+    }`
+
+      let featureCollectionString = '{"type": "FeatureCollection",   "features": [' +
+        geoPointArr.join(',') +
+        ',' +
+        lineStr + ']}'
+
+
+
+    return featureCollectionString;
+
+  }
+
+
+  /*
+    Clear the data from all layers
    */
   public clearLayers(aLayerMap: Map<string, L.GeoJSON>){
     for(let key in aLayerMap){
