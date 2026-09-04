@@ -29,7 +29,7 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css",
-              "./node_modules/leaflet/dist/leaflet.css"
+              "leaflet/dist/leaflet.css"
 
             ],
             "scripts": []
@@ -90,7 +90,7 @@
             ],
             "styles": [
               "src/styles.css",
-               "./node_modules/leaflet/dist/leaflet.css",
+               "leaflet/dist/leaflet.css",
               "@angular/material/prebuilt-themes/azure-blue.css"
                           ],
             "scripts": ["src/assets/leaflet/leaflet.js"]
@@ -98,5 +98,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

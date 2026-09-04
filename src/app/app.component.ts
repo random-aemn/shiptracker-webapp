@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {WebSocketService} from './services/WebSocketService';
 import {filter, Observable, of, Subscription} from 'rxjs';
@@ -24,7 +24,6 @@ import {MmsiPrType} from './models/mmsi-positionReport-type';
     MatButtonModule,
     MatInput,
     MatFormField,
-    NgForOf,
     GeoMap
     ],
   styleUrl: './app.component.css'
@@ -49,7 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private webSocketService: WebSocketService,
               private jsonReader: JsonReaderService,
-              private myFakeDataService: MyFakeDataService) {}
+              private myFakeDataService: MyFakeDataService,
+              private cdr: ChangeDetectorRef) {}
 
 
   ngOnInit() {
@@ -64,14 +64,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   stopWebsocket() {
     // Unsubscribe from WebSocket messages and close the connection
-    this.messageSubscription.unsubscribe();
-    this.webSocketService.closeConnection();
+    if(this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+      // this.webSocketService.closeConnection();
+      // this.messageSubscription = null;
+    }
   }
 
 
   subscribeToWebSocket() {
+    if(this.messageSubscription){
+      this.messageSubscription.unsubscribe()
+    }
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (messageList: PositionReport[]) => { //messageList holds what is returned from the subscription
+        console.log("I'm subscribing to the websocket");
 
         //  NOTE: the values in the data-headers.csv file MUST match the attributes in the PositionReport model in order to map correctly
         let positionReportResponse: PositionReport[] = messageList as PositionReport[]; // asserting that messageList will be an array of PositionReport object
@@ -79,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // Append a 'Z' to each timestamp to make it parseable for Typescript
         for(let i = 0; i<positionReportResponse.length; i++){
           positionReportResponse[i].BaseDateTime = positionReportResponse[i].BaseDateTime + "Z";
+          console.log("I added a 'z' to the timestamp");
 
         }
 
@@ -121,11 +129,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Displays an interactive listing of the properties of a specified JavaScript object. This listing lets you use disclosure triangles to examine the contents of child objects.
         // message.plotColor = mmsiToColor(message.MMSI);
-        for (let message of messageList){
-          this.payloadArray.push(message)
-          // console.log(message);
 
-        }
+        this.payloadArray = [...messageList.reverse(), ...this.payloadArray]
+          this.cdr.markForCheck();
+          this.cdr.detectChanges();
+
+        // }
       }
     );
   }

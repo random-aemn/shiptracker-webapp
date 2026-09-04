@@ -4,7 +4,7 @@ import { MapServiceService } from '../services/map.service';
 import { Observable } from 'rxjs';
 import { JsonReaderService } from '../services/json-reader.service';
 import { FeatureCollection, GeoJsonGeometryTypes } from 'geojson';
-import { AntPath, antPath } from 'leaflet-ant-path';
+import { antPath } from 'leaflet-ant-path';
 import { MyFakeDataService } from '../services/my-fake-data.service';
 import { PositionReport } from '../models/position-report';
 

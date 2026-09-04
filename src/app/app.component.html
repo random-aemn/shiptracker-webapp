@@ -53,6 +53,7 @@
       </div>
 <!--      Position Report Table Data-->
       <table class="table-auto w-full">
+        <thead>
         <tr>
           <th>MMSI</th>
           <th>Time</th>
@@ -61,16 +62,22 @@
           <th >Heading</th>
           <th >Ship Name</th>
         </tr>
-        <tr *ngFor="let positionReport of payloadArray.reverse()">
+        </thead>
+
+<tbody>
+   @for (positionReport of payloadArray; track positionReport.BaseDateTime + positionReport.MMSI) {
+     <tr>
           <td>{{ positionReport.MMSI }}</td>
           <td>{{ positionReport.BaseDateTime }}</td>
           <td>{{ positionReport.LAT }}</td>
           <td>{{ positionReport.LON }}</td>
           <td>{{ positionReport.Heading }}</td>
           <td>{{ positionReport.VesselName }}</td>
+     </tr>
+         }
+</tbody>
 
-        </tr>
-      </table>
+ </table>
 
     </div>
 
